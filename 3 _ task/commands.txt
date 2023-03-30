@@ -1,0 +1,17 @@
+npm i -g npm
+npm i -g typescript
+npm i -g @nestjs/cli
+
+npm i @nestjs/config
+npm i cross-env
+npm i pg
+
+nest.cmd new ts_server_v0
+cd ts_server_v0
+
+nest.cmd generate module users
+nest.cmd generate controller users
+nest.cmd generate service users
+
+npm run start
+npm run start:dev
