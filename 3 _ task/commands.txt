@@ -1,10 +1,24 @@
+>> пакеты разработки
+
 npm i -g npm
 npm i -g typescript
 npm i -g @nestjs/cli
 
-npm i @nestjs/config
-npm i cross-env
-npm i pg
+npm i @nestjs/config   << использование настроек процесса
+npm i cross-env        << добавление настроек в строку запуска
+npm i pg               << доступ к Postgres
+npm i @nestjs/jwt      << модуль авторизации
+npm i bcryptjs         << шифрование для паролей
+npm i @types/bcryptjs  << для шифрования
+
+! npm i @nestjs/sequelize     << ORM для баз данных
+! npm i sequelize             << для ORM
+! npm i sequelize-typescript  << для ORM
+! npm i -D @types/sequelize   << для ORM
+! npm i @nestjs/swagger       << создание сайта-документации
+! npm i swagger-ui-express    << дополнение для графики swagger'а
+
+>> управление проектом
 
 nest.cmd new ts_server_v0
 cd ts_server_v0
