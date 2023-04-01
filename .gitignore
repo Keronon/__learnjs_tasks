@@ -1,4 +1,5 @@
-переход.txt
+*.todo
+1 _ task _ load.txt
 
 # Logs
 logs

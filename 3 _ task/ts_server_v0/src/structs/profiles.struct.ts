@@ -8,5 +8,5 @@ export interface Profile
     p_birthday  : string;
     p_gender    : string;
     p_phone     : string;
-    p_avatar    : string;
+    p_id_avatar : string | number;
 }

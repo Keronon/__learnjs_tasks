@@ -4,12 +4,15 @@ npm i -g npm
 npm i -g typescript
 npm i -g @nestjs/cli
 
-npm i @nestjs/config   << использование настроек процесса
-npm i cross-env        << добавление настроек в строку запуска
-npm i pg               << доступ к Postgres
-npm i @nestjs/jwt      << модуль авторизации
-npm i bcryptjs         << шифрование для паролей
-npm i @types/bcryptjs  << для шифрования
+npm i @nestjs/config        << использование настроек процесса
+npm i cross-env             << добавление настроек в строку запуска
+npm i pg                    << доступ к Postgres
+npm i @nestjs/jwt           << модуль авторизации
+npm i bcryptjs              << шифрование для паролей
+npm i @types/bcryptjs       << для шифрования
+npm i uuid                  << для генерации имён
+npm i @types/uuid           << для генерации имён
+npm i @nestjs/serve-static  << для отображения изображений с сервера
 
 ! npm i @nestjs/sequelize     << ORM для баз данных
 ! npm i sequelize             << для ORM
@@ -17,6 +20,8 @@ npm i @types/bcryptjs  << для шифрования
 ! npm i -D @types/sequelize   << для ORM
 ! npm i @nestjs/swagger       << создание сайта-документации
 ! npm i swagger-ui-express    << дополнение для графики swagger'а
+! npm i class-validator       << для pipe-контроля ввода
+! npm i class-transformer     << для pipe-контроля ввода
 
 >> управление проектом
 
@@ -29,3 +34,5 @@ nest.cmd generate service users
 
 npm run start
 npm run start:dev
+
+>> также не использовался docker

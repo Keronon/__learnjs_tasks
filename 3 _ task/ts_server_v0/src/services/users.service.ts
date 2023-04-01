@@ -29,6 +29,13 @@ export class UsersService
         return row;
     }
 
+    async DeleteUser ( u_id: number )
+    {
+        await DB.query(` DELETE FROM users WHERE u_id = $1 RETURNING *; `, [ u_id ]);
+
+        return true;
+    }
+
     async GetUsers () // res : rows array
     {
         log(`  = > get users`);
