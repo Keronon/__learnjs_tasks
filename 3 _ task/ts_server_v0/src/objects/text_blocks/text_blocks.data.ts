@@ -5,5 +5,6 @@ export class TextBlock
     tb_group   : string;
     tb_header  : string;
     tb_text    : string;
-    tb_id_image: string | number;
+    tb_id_image: number;
+    image_name : string;
 }

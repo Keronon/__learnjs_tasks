@@ -1,12 +1,45 @@
+
+// импорты
 import { ConfigModule } from "@nestjs/config";
 import { Pool         } from "pg";
 
+// подгрузка переменных среды из файла
 ConfigModule.forRoot( { envFilePath: `.${process.env.NODE_ENV}.env` } )
 
+// объект подключения к БД
 export const DB = new Pool( {
-    host:     process.env.PG_HOST,
+    host:      process.env.PG_HOST,
     port:     +process.env.PG_PORT,
-    user:     process.env.PG_USER,
-    password: process.env.PG_PASS,
-    database: process.env.PG_DB
+    user:      process.env.PG_USER,
+    password:  process.env.PG_PASS,
+    database:  process.env.PG_DB
 } );
+
+// генератор запросов к БД
+export const QUERYes =
+{
+    INSERT: function<T>( table: string, data: T )
+    {
+        return ` INSERT INTO ${ table } ( ${ Object.keys(data).join(`, `) } ) VALUES (
+            ${ Object.values(data).map( (v) => typeof(v) === 'string' ? `'${v}'` : v ).join( `, ` ) } ) RETURNING *; `;
+    },
+
+    UPDATE: function( table: string, data: [string, any][], condition: string )
+    {
+        return ` UPDATE ${ table } SET ${ data.map( (v) => `${v[0]} = ` + (typeof(v[1]) === 'string' ? `'${v[1]}'` : v[1]) ).join( `, ` ) }
+            WHERE ${ condition } RETURNING *; `;
+    },
+
+    DELETE: function(table: string, condition: string)
+    {
+        return ` DELETE FROM ${ table } WHERE ${ condition } RETURNING *; `;
+    },
+    
+    SELECT: function(table: string, condition?: string)
+    {
+        let query = ` SELECT * FROM ${ table } `;
+        if ( condition ) query += ` WHERE ${ condition } `;
+
+        return query + ` ; `;
+    }
+};

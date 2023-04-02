@@ -1,5 +1,11 @@
+
+// элементы NestJS
 import { Module } from '@nestjs/common';
-import { FilesService } from '../services/files.service';
+
+// сервисы
+import { FilesService } from './files.service';
+
+// Модуль работы с файлами ->>
 
 @Module({
     providers: [ FilesService ],
