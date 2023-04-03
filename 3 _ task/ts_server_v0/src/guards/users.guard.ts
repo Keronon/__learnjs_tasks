@@ -30,9 +30,6 @@ export class UsersGuard implements CanActivate
             // получение данных о запросе
             const req = context.switchToHttp().getRequest();
 
-            // проверка авторизации
-            const user = this.verify( req.headers.authorization );
-
             // получение декоратора допуска выполнения над своими данными
             const canSelf = this.reflector.getAllAndOverride<string[]>(SELF_DECOR, [
                 context.getHandler(),
@@ -42,6 +39,9 @@ export class UsersGuard implements CanActivate
             // проверка допуска выполнения над своими данными
             if ( canSelf )
             {
+                // проверка авторизации
+                const user = this.verify( req.headers.authorization );
+
                 const u_id = req.params[`u_id`];
                 if ( u_id && user.u_id === +u_id ) return true;
             }
@@ -53,6 +53,9 @@ export class UsersGuard implements CanActivate
             ]);
 
             if ( !requiredRoles ) return true;
+
+            // проверка авторизации
+            const user = this.verify( req.headers.authorization );
             
             if ( typeof(user.roles) === 'string' ) throw new InternalServerErrorException( ` Ошибка типа данных в ролях пользователя ` );
             return user.roles.some( role => requiredRoles.includes(role) );

@@ -85,7 +85,9 @@ export class ProfilesService
     {
         log(`  = > get profile by id : ${p_id}`);
 
-        const profile: Profile = (await DB.query( QUERYes.SELECT( `profiles`, `p_id = ${p_id}` ) )).rows[0];
+        let profile: Profile = (await DB.query( QUERYes.SELECT( `profiles`, `p_id = ${p_id}` ) )).rows[0];
+        
+        profile = { ...profile, avatar_name: (await this.filesService.GetFileById( profile.p_id_avatar )).f_name };
 
         log(`  - > ok`);
         return profile;

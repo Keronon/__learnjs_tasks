@@ -25,7 +25,7 @@ export class TextBlocksService
     // добавление нового блока
     async AddBlock ( data: TextBlock, image: any )
     {
-        log(`  = > add text-block : ${data.tb_html_id} > ${data.tb_group}`);
+        log(`  = > add text-block`);
 
         // добавление нового текстового блока в БД
         let row: TextBlock = (await DB.query( QUERYes.INSERT<TextBlock>( `text_blocks`, data ) )).rows[0];
@@ -42,7 +42,7 @@ export class TextBlocksService
     {
         // добавление изображения в БД
         const file: DBFile = await this.filesService.AddFile( image );
-
+        
         // связывание данных об изображении с текстовым блоком
         let row: TextBlock = (await DB.query( 
             QUERYes.UPDATE( `text_blocks`, [["tb_id_image", file.f_id]], `tb_id = ${tb_id}` ) )).rows[0];
@@ -51,5 +51,25 @@ export class TextBlocksService
         row.image_name = file.f_name;
 
         return row;
+    }
+
+    // получение информации о текстовых блоках с указанными группами
+    async GetTextBlocksByGroups ( data: { groups: string[] } )
+    {
+        log(`  = > get text_blocks by groups`);
+
+        const IN = data.groups.map( ( group ) => `'${group}'` ).join(`, `);
+        const hold_tb: TextBlock[] = (await DB.query( QUERYes.SELECT( `text_blocks`, `tb_group IN (${IN})` ) )).rows;
+
+        let text_blocks: TextBlock[] = [];
+        for (let text_block of hold_tb)
+        {
+            if ( text_block.tb_id_image )
+                text_block.image_name = (await this.filesService.GetFileById( text_block.tb_id_image )).f_name;
+            text_blocks.push( text_block );
+        }
+
+        log(`  - > ok`);
+        return text_blocks;
     }
 }

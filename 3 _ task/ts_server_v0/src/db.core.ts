@@ -38,7 +38,7 @@ export const QUERYes =
     SELECT: function(table: string, condition?: string)
     {
         let query = ` SELECT * FROM ${ table } `;
-        if ( condition ) query += ` WHERE ${ condition } `;
+        if ( condition && condition.length > 3 ) query += ` WHERE ${ condition } `;
 
         return query + ` ; `;
     }

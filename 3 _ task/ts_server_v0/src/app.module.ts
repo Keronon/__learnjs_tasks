@@ -19,7 +19,7 @@ import { FilesModule      } from './objects/files/files.module';
     [
         ConfigModule.forRoot( { envFilePath: `.${process.env.NODE_ENV}.env` } ),
 
-        ServeStaticModule.forRoot( { rootPath: path.resolve( __dirname, `loads` ) } ),
+        ServeStaticModule.forRoot( { rootPath: path.resolve( __dirname, `objects`, `loads` ) } ),
         
         UsersModule, RolesModule, ProfilesModule, TextBlocksModule, FilesModule
     ]
