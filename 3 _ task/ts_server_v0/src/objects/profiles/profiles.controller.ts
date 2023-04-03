@@ -1,6 +1,11 @@
 
+const log = ( text: string ) => console.log(  `${colours.fg.yellow}${text}${colours.reset}` );
+
 // элементы NestJS
 import { Body, Controller, Get, Param, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+
+// собственные дополнительные элементы
+import { colours } from 'src/console.colors';
 
 // структуры БД
 import { Registrate } from 'src/objects/profiles/registrate.data';
@@ -31,6 +36,8 @@ export class ProfilesController
     Registrate ( @Body() data: Registrate, // тело запроса
                  @UploadedFile() image )   // пришедший в запросе файл
     {
+        log(`  = > C-Profiles : registrate`);
+
         return this.service.RegistrateAccount( data, image );
     }
     
@@ -41,6 +48,8 @@ export class ProfilesController
     @Post(`/:u_id/del`)             // путь запроса
     Delete ( @Param(`u_id`) u_id: number )
     {
+        log(`  = > C-Profiles : delete`);
+
         return this.service.DeleteAccount( u_id );
     }
 
@@ -50,6 +59,8 @@ export class ProfilesController
     @Get(`/:id`)                  // путь запроса
     GetById ( @Param(`id`) p_id: number )
     {
+        log(`  = > C-Profiles : get by id`);
+
         return this.service.GetProfileById( p_id );
     }
 
@@ -60,6 +71,8 @@ export class ProfilesController
     @Post(`/:id/avatar`)          // путь запроса
     SetAvatar ( @Param(`id`) id: number, @UploadedFile() image )
     {
+        log(`  = > C-Profiles : set avatar`);
+
         return this.service.SetAvatar( id, image );
     }
 }

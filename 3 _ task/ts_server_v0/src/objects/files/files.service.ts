@@ -23,6 +23,8 @@ export class FilesService
     // Добавление нового файла в БД и систему
     async AddFile( file: any )
     {
+        log(`  - > S-Files : add file`);
+
         try
         {
             const file_name: string = file.originalname;
@@ -57,6 +59,8 @@ export class FilesService
     // Удаление файла из БД и системы
     async DeleteFile( file: DBFile )
     {
+        log(`  - > S-Files : delete file`);
+
         try
         {
             // составление пути файла
@@ -78,13 +82,17 @@ export class FilesService
     // Получение информации о файле по идентификатору
     async GetFileById ( f_id: number )
     {
+        log(`  - > S-Files : get file by id`);
+
         const row: DBFile = (await DB.query(QUERYes.SELECT( `files`, `f_id = ${f_id}` ) )).rows[0];
         return row;
     }
     
     // Получение информации о файлах на которые нет ссылок
-    async GetFilesUnlinked ( f_id: number )
+    async GetFilesUnlinked ()
     {
+        log(`  - > S-Files : get files unlinked`);
+
         const rows: DBFile[] = (await DB.query( `
             SELECT f_id, f_date_load, f_name FROM files
             LEFT JOIN profiles    ON f_id = p_id_avatar

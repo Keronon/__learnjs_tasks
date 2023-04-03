@@ -1,3 +1,6 @@
+
+const log = console.log;
+
 export interface Profile
 {
     p_id        ?: number;
@@ -15,6 +18,8 @@ export interface Profile
 // определяет содержание обязательных полей БД в объекте
 export function HasMinimal (object: Profile)
 {
+    log(`  - > D-Profiles : has minimal`);
+
     return ( 'p_surname'  in object &&
              'p_birthday' in object &&
              'p_gender'   in object );

@@ -1,6 +1,11 @@
 
+const log = ( text: string ) => console.log(  `${colours.fg.yellow}${text}${colours.reset}` );
+
 // элементы NestJS
 import { Body, Controller, Post, Get, UseGuards } from '@nestjs/common';
+
+// собственные дополнительные элементы
+import { colours } from 'src/console.colors';
 
 // структуры БД
 import { Role         } from './roles.data';
@@ -26,6 +31,8 @@ export class RolesController
     @Post()                   // путь запроса
     Create ( @Body() data: Role )
     {
+        log(`\n  = > C-Roles : create\n`);
+
         return this.service.CreateRole( data );
     }
 
@@ -34,6 +41,8 @@ export class RolesController
     @Get()                    // путь запроса
     GetAll ()
     {
+        log(`\n  = > C-Roles : get all\n`);
+
         return this.service.GetRoles();
     }
 }

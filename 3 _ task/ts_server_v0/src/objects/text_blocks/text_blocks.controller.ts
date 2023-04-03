@@ -1,6 +1,11 @@
 
+const log = ( text: string ) => console.log(  `${colours.fg.yellow}${text}${colours.reset}` );
+
 // элементы NestJS
 import { Body, Controller, Get, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+
+// собственные дополнительные элементы
+import { colours } from 'src/console.colors';
 
 // структуры БД
 import { TextBlock } from 'src/objects/text_blocks/text_blocks.data';
@@ -11,9 +16,6 @@ import { TextBlocksService } from 'src/objects/text_blocks/text_blocks.service';
 // вспомогательные объекты
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UsersGuard } from 'src/guards/users.guard';
-
-// декораторы
-import { Roles } from 'src/decorators/role.decorator';
 
 // Сетевой контроллер текстовых блоков ->>
 
@@ -31,6 +33,8 @@ export class TextBlocksController
     Add ( @Body() data: TextBlock, // тело запроса
                  @UploadedFile() image )   // пришедший в запросе файл
     {
+        log(`\n  = > C-Blocks : add\n`);
+
         return this.service.AddBlock( data, image );
     }
 
@@ -38,6 +42,8 @@ export class TextBlocksController
     @Get() // путь запроса
     GetTextBlocksByGroups (@Body() data: { groups: string[] })
     {
+        log(`\n  = > C-Blocks : get blocks by groups\n`);
+
         return this.service.GetTextBlocksByGroups( data );
     }
 }

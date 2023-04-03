@@ -1,4 +1,6 @@
 
+const log = console.log;
+
 // дополнительные библиотеки
 import * as path from 'path';
 
@@ -14,6 +16,9 @@ import { ProfilesModule   } from './objects/profiles/profiles.module';
 import { TextBlocksModule } from "./objects/text_blocks/text_blocks.module";
 import { FilesModule      } from './objects/files/files.module';
 
+// сервисы
+import { FilesService } from './objects/files/files.service';
+
 @Module( {
     imports:
     [
@@ -24,4 +29,17 @@ import { FilesModule      } from './objects/files/files.module';
         UsersModule, RolesModule, ProfilesModule, TextBlocksModule, FilesModule
     ]
 } )
-export class AppModule { }
+export class AppModule
+{
+    constructor ( private fileService: FilesService )
+    {
+        log(`\n  = > M-App : construct\n`);
+
+        // удаление несвязанных файлов
+        setInterval(async () =>
+        {
+            for ( let file of await fileService.GetFilesUnlinked() )
+                await fileService.DeleteFile( file );
+        }, 1000 * 60 * 60);
+    }
+}

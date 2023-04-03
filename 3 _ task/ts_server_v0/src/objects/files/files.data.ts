@@ -1,4 +1,6 @@
 
+const log = console.log;
+
 // структура записи в БД о файле
 export interface DBFile
 {
@@ -10,6 +12,8 @@ export interface DBFile
 // определяет содержание обязательных полей БД в объекте
 export function HasMinimal (object: DBFile)
 {
+    log(`  - > D-Files : has minimal`);
+
     return ( 'f_date_load' in object &&
              'f_name'      in object );
 }

@@ -25,21 +25,21 @@ export class TextBlocksService
     // добавление нового блока
     async AddBlock ( data: TextBlock, image: any )
     {
-        log(`  = > add text-block`);
+        log(`  - > S-Blocks : add block`);
 
         // добавление нового текстового блока в БД
         let row: TextBlock = (await DB.query( QUERYes.INSERT<TextBlock>( `text_blocks`, data ) )).rows[0];
 
         // если с блоком было передано изображение, то добавить его к записи
         if (image) row = await this.AddImage( row.tb_id, image );
-
-        log(`  - > ok`);
         return row;
     }
 
     // добавление изображения к тектовому блоку
     async AddImage (tb_id: number, image: any)
     {
+        log(`  - > S-Blocks : add image`);
+
         // добавление изображения в БД
         const file: DBFile = await this.filesService.AddFile( image );
         
@@ -49,14 +49,13 @@ export class TextBlocksService
         
         // дописывание имени файла к информации о текстовом блоке
         row.image_name = file.f_name;
-
         return row;
     }
 
     // получение информации о текстовых блоках с указанными группами
     async GetTextBlocksByGroups ( data: { groups: string[] } )
     {
-        log(`  = > get text_blocks by groups`);
+        log(`  - > S-Blocks : get blocks by groups`);
 
         const IN = data.groups.map( ( group ) => `'${group}'` ).join(`, `);
         const hold_tb: TextBlock[] = (await DB.query( QUERYes.SELECT( `text_blocks`, `tb_group IN (${IN})` ) )).rows;
@@ -69,7 +68,6 @@ export class TextBlocksService
             text_blocks.push( text_block );
         }
 
-        log(`  - > ok`);
         return text_blocks;
     }
 }

@@ -1,3 +1,6 @@
+
+const log = console.log;
+
 import { UnauthorizedException } from "@nestjs/common";
 
 export interface Token
@@ -16,6 +19,8 @@ export interface User extends Token
 // определяет содержание обязательных полей БД в объекте
 export function HasMinimal (object: User)
 {
+    log(`  - > D-Users : has minimal`);
+
     return ( 'u_email'    in object &&
              'u_password' in object );
 }
@@ -23,6 +28,8 @@ export function HasMinimal (object: User)
 // определяет содержание полей авторизации в объекте
 export function HasLogin (object: User)
 {
+    log(`  - > D-Users : has login`);
+
     if ( 'u_password' in object && ( 'u_email' in object || 'u_login' in object) )
         return true;
 

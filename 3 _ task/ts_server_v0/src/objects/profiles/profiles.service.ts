@@ -32,6 +32,8 @@ export class ProfilesService
     // регистрация нового аккаунта ( пользователя + профиль )
     async RegistrateAccount ( data: Registrate, image: any )
     {
+        log(`  - > S-Profiles : registrate account`);
+
         // проверка к-ва предоставленных данных
         if ( !HasMinimal(data) )
             throw new BadRequestException(`Недостаточно данных для регистрации`);
@@ -71,6 +73,8 @@ export class ProfilesService
     // удаление аккаунта ( пользователя + профиль )
     async DeleteAccount ( u_id: number )
     {
+        log(`  - > S-Profiles : delete account`);
+
         // проверка существования профиля, который запрошено удалить
         const user = await this.userService.GetUserById( u_id );
         if ( !user )
@@ -83,19 +87,19 @@ export class ProfilesService
     // получение информации о профиле по идентификатору
     async GetProfileById ( p_id: number ) // res : row
     {
-        log(`  = > get profile by id : ${p_id}`);
+        log(`  - > S-Profiles : get profile by id`);
 
         let profile: Profile = (await DB.query( QUERYes.SELECT( `profiles`, `p_id = ${p_id}` ) )).rows[0];
         
         profile = { ...profile, avatar_name: (await this.filesService.GetFileById( profile.p_id_avatar )).f_name };
-
-        log(`  - > ok`);
         return profile;
     }
 
     // изменение аватара пользователю
     async SetAvatar ( p_id: number, image: any )
     {
+        log(`  - > S-Profiles : set avatar`);
+
         // если изображение было передано - установить аватар, если нет - удалить аватар
         let row: Profile;
         if (image)
@@ -109,6 +113,8 @@ export class ProfilesService
     // установка аватара пользователя
     private async AddAvatar ( p_id: number, image: any )
     {
+        log(`  - > S-Profiles : add avatar`);
+
         // добавление изображение в систему
         const file: DBFile = await this.filesService.AddFile( image );
 
@@ -123,6 +129,8 @@ export class ProfilesService
     // удаление аватара пользователя
     private async RemoveAvatar ( p_id: number )
     {
+        log(`  - > S-Profiles : remove avatar`);
+
         // отсоединение изображения от профиля
         let row: Profile = (await DB.query( QUERYes.UPDATE( `profiles`, [['p_id_avatar', null]],
         `p_id = '${p_id}'` ) )).rows[0];

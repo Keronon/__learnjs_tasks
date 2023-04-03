@@ -1,4 +1,6 @@
 
+const log = console.log;
+
 // импорты
 import { ConfigModule } from "@nestjs/config";
 import { Pool         } from "pg";
@@ -20,23 +22,31 @@ export const QUERYes =
 {
     INSERT: function<T>( table: string, data: T )
     {
+        log(`  - > DB : INSERT`);
+        
         return ` INSERT INTO ${ table } ( ${ Object.keys(data).join(`, `) } ) VALUES (
             ${ Object.values(data).map( (v) => typeof(v) === 'string' ? `'${v}'` : v ).join( `, ` ) } ) RETURNING *; `;
     },
 
     UPDATE: function( table: string, data: [string, any][], condition: string )
     {
+        log(`  - > DB : UPDATE`);
+
         return ` UPDATE ${ table } SET ${ data.map( (v) => `${v[0]} = ` + (typeof(v[1]) === 'string' ? `'${v[1]}'` : v[1]) ).join( `, ` ) }
             WHERE ${ condition } RETURNING *; `;
     },
 
     DELETE: function(table: string, condition: string)
     {
+        log(`  - > DB : DELETE`);
+
         return ` DELETE FROM ${ table } WHERE ${ condition } RETURNING *; `;
     },
     
     SELECT: function(table: string, condition?: string)
     {
+        log(`  - > DB : SELECT`);
+
         let query = ` SELECT * FROM ${ table } `;
         if ( condition && condition.length > 3 ) query += ` WHERE ${ condition } `;
 

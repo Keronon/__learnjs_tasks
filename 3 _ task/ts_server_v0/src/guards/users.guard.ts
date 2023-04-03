@@ -1,4 +1,6 @@
 
+const log = console.log;
+
 // элементы NestJS
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable, InternalServerErrorException, UnauthorizedException } from "@nestjs/common";
 
@@ -25,6 +27,8 @@ export class UsersGuard implements CanActivate
     // защита по признакам пользователя
     canActivate (context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>
     {
+        log(`  = > G-Users : can activate`);
+
         try
         {
             // получение данных о запросе
@@ -68,6 +72,8 @@ export class UsersGuard implements CanActivate
 
     verify(authHeader): User
     {
+        log(`  = > G-Users : verify`);
+
         const [ bearer, token ] = authHeader.split(' ');
             
         if ( bearer != 'Bearer' || !token )

@@ -8,7 +8,7 @@ import * as bcrypt from 'bcryptjs';
 import { DB, QUERYes } from 'src/db.core';
 
 // элементы NestJS
-import { HttpException, HttpStatus, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 
 // структуры БД
 import { HasLogin, Token, User } from './users.data';
@@ -30,6 +30,8 @@ export class UsersService
     // авторизация пользователя
     async Login ( data: User )
     {
+        log(`  - > S-Users : login`);
+
         const user = await this.LoginValid( data ); // проверка существования пользователя
         return this.GetToken( user );               // выдача токена авторизации
     }
@@ -37,6 +39,8 @@ export class UsersService
     // проверка данных авторизации
     private async LoginValid( data: User )
     {
+        log(`  - > S-Users : valid`);
+
         // получение поля для авторизации
         const field = HasLogin(data);
 
@@ -58,6 +62,8 @@ export class UsersService
     // получение токена авторизации
     async GetToken (user: User)
     {
+        log(`  - > S-Users : get token`);
+
         const payload: Token = user;
         return { token: this.jwtService.sign( payload ) }
     }
@@ -65,7 +71,7 @@ export class UsersService
     // Создание нового пользователя
     async CreateUser (data: User)
     {
-        log(`  = > create user : ${data.u_email}`);
+        log(`  - > S-Users : create user`);
 
         // выделение ролей
         const roles = data.roles;
@@ -84,14 +90,14 @@ export class UsersService
 
         // вписывание названия роли в возвращаемое значение
         row.roles = ( roles && roles.length > 0 ) ? roles : [ `user` ];
-
-        log(`  - > ok`);
         return row;
     }
 
     // добавление роли пользователю
     async AddRole (u_id: number, r_name: string)
     {
+        log(`  - > S-Users : add role`);
+
         const user = await this.GetUserById (u_id);            // получение информации о пользователе
         const role = await this.roleService.GetRoleByName(r_name); // получение информации о роли
 
@@ -109,6 +115,8 @@ export class UsersService
     // удаление пользователя
     async DeleteUser ( u_id: number )
     {
+        log(`  - > S-Users : delete user`);
+
         await DB.query( QUERYes.DELETE( `users`, `u_id = ${u_id}` ) );
         return true;
     }
@@ -116,7 +124,7 @@ export class UsersService
     // получение информации о всех пользователях
     async GetUsers ()
     {
-        log(`  = > get users`);
+        log(`  - > S-Users : get users`);
 
         // получение основной информации
         const rows : User[] = (await DB.query( QUERYes.SELECT( `users` ) )).rows;
@@ -139,14 +147,13 @@ export class UsersService
             users.push(row);
         }
 
-        log(`  - > ok`);
         return users;
     }
 
     // получение информации о пользователе по идентификатору
     async GetUserById (u_id: number)
     {
-        log(`  = > get user by id : ${u_id}`);
+        log(`  - > S-Users : get user by id`);
 
         // получение основной информации о пользователе
         const user: User = (await DB.query( QUERYes.SELECT( `users`, `u_id = ${u_id}` ) )).rows[0];
@@ -162,14 +169,13 @@ export class UsersService
         for (let role of roles)
             user.roles.push(role.r_name);
 
-        log(`  - > ok`);
         return user;
     }
 
     // поучение информации о пользователе по уникальному полю
     async GetUserByUnic (data: User)
     {
-        log(`  = > get user by unic`);
+        log(`  - > S-Users : get user by unic`);
 
         // определение имеющегося уникального поля и поиск по нему
         let user: User;
@@ -191,7 +197,6 @@ export class UsersService
         for (let role of roles)
             user.roles.push(role.r_name);
 
-        log(`  - > ok`);
         return user;
     }
 }
